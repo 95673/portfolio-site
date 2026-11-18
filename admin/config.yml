@@ -1,0 +1,22 @@
+backend:
+  name: github
+  repo: 95673/portfolio-site
+  branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "perfil"
+    label: "Configurações do Portfólio"
+    files:
+      - label: "Dados Principais"
+        name: "geral"
+        file: "dados.json"
+        fields:
+          - { label: "Nome Completo", name: "nome", widget: "string", default: "Dinostrato Eugénio Bernardo" }
+          - { label: "Foto de Perfil", name: "foto", widget: "image" }
+          - { label: "Currículo (PDF)", name: "cv", widget: "file" }
+          - { label: "Localização", name: "localizacao", widget: "string", default: "Matola, Moçambique" }
+          - { label: "Sobre Mim (Parágrafo 1)", name: "sobre1", widget: "text" }
+          - { label: "Sobre Mim (Parágrafo 2)", name: "sobre2", widget: "text" }
