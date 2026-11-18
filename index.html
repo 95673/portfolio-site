@@ -76,7 +76,6 @@ a:hover { filter: brightness(1.2); }
   outline-offset: 3px;
 }
 
-/* Header Flutuante Moderno */
 header.topo-fixo {
   position: sticky;
   top: 0;
@@ -180,7 +179,6 @@ header.topo-fixo {
 }
 .icone-btn:hover { border-color: var(--teal); }
 
-/* Hero Section */
 .hero {
   padding: 5rem 0 4rem;
 }
@@ -260,7 +258,6 @@ header.topo-fixo {
   background: var(--surface);
 }
 
-/* Secções Gerais */
 section {
   padding: 5rem 0;
   border-top: 1px solid var(--line);
@@ -271,7 +268,6 @@ section h2 {
   margin-bottom: 2.5rem;
 }
 
-/* Sobre Mim & Perfil Detalhado */
 .sobre-grid {
   display: grid;
   gap: 3rem;
@@ -330,7 +326,6 @@ section h2 {
   font-size: 0.95rem;
 }
 
-/* Projetos */
 .grade-projetos {
   display: grid;
   gap: 1.5rem;
@@ -389,7 +384,6 @@ section h2 {
   margin-top: 0.5rem;
 }
 
-/* Demos Interativas */
 .demos-container {
   margin-top: 4rem;
   background: var(--surface);
@@ -452,7 +446,6 @@ section h2 {
   color: var(--acc);
 }
 
-/* Competências */
 .grade-skills {
   display: grid;
   gap: 1.5rem;
@@ -472,7 +465,6 @@ section h2 {
   color: var(--teal);
 }
 
-/* Experiência Timeline */
 .timeline-grid {
   display: grid;
   gap: 3rem;
@@ -523,7 +515,6 @@ section h2 {
   margin: 0 0 0.8rem;
 }
 
-/* Contacto & Rodapé */
 .contacto-grid {
   display: grid;
   gap: 3rem;
@@ -557,6 +548,302 @@ section h2 {
   border: 1px solid var(--line);
   color: var(--ink);
   font: inherit;
+}
+
+.campo textarea { min-height: 7rem; resize: vertical; }
+
+.info-contacto {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.info-contacto p {
+  color: var(--mut);
+  margin: 0;
+}
+
+footer {
+  border-top: 1px solid var(--line);
+  padding: 3rem 0;
+  text-align: center;
+  color: var(--mut);
+  font-size: 0.9rem;
+}
+
+.chat-abrir {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 99;
+  background: var(--teal);
+  color: #fff;
+  border: 0;
+  border-radius: 99px;
+  padding: 0.85rem 1.4rem;
+  font: 600 0.95rem Figtree, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(20, 184, 166, 0.4);
+  transition: transform 0.2s;
+}
+.chat-abrir:hover { transform: scale(1.05); }
+
+.chat-janela {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 5rem;
+  z-index: 99;
+  width: min(22rem, calc(100vw - 2rem));
+  height: 30rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.chat-janela[hidden] { display: none; }
+
+.chat-topo {
+  background: var(--surface-card);
+  padding: 0.9rem 1rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-topo button {
+  background: none;
+  border: 0;
+  color: var(--ink);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.chat-msgs {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.msg {
+  max-width: 85%;
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.msg.bot { background: var(--surface-card); align-self: flex-start; color: var(--ink); }
+.msg.user { background: var(--teal); color: #fff; align-self: flex-end; }
+
+.chat-form {
+  padding: 0.75rem;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 0.5rem;
+  background: var(--surface);
+}
+
+.chat-form input {
+  flex: 1;
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9rem;
+}
+</style>
+<script>
+const API_URL = "https://portfolio-backend-kappa-blond.vercel.app";
+window.claude = { use: async nome => {
+  if (nome !== "sample") return null;
+  const chamar = async (entrada, json) => {
+    const r = await fetch(API_URL + "/api/sample", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ input: entrada, json }) });
+    if (!r.ok) throw { code: "failed" };
+    return (await r.json()).text;
+  };
+  const f = async (entrada) => { const text = await chamar(entrada, false); return { text }; };
+  f.json = async entrada => JSON.parse((await chamar(entrada, true)).replace(/```json|```/g, "").trim());
+  return f;
+} };
+</script>
+</head>
+<body>
+
+<header class="topo-fixo" id="topo">
+  <div class="wrap bar">
+    <a class="logo" href="#topo"><span></span>Dinostrato Bernardo</a>
+    <nav aria-label="Principal">
+      <a href="#sobre">Sobre</a>
+      <a href="#projetos">Projetos</a>
+      <a href="#competencias">Competências</a>
+      <a href="#experiencia">Experiência</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+    <div class="acoes">
+      <a class="btn sec" id="btn-cv" href="cv.pdf" download="Dinostrato_Bernardo_CV.pdf" style="padding: 0.6rem 1rem; font-size: 0.9rem;">Baixar CV</a>
+      <button class="icone-btn" id="tema" type="button" aria-label="Mudar tema">◐</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div class="hero-grid">
+      <div>
+        <div class="badge-status">
+          <span>●</span> Disponível para novos projetos & Oportunidades
+        </div>
+        <h1 id="titulo">Desenvolvimento <span>Full Stack</span> & IA para o mundo real.</h1>
+        <p id="subtitulo">Transformo problemas complexos em sistemas inteligentes e escaláveis. Especialista em Python, Flask, APIs e automações voltadas para impacto local e global.</p>
+        <div class="botoes-hero">
+          <a class="btn" href="#projetos">Ver Projetos</a>
+          <a class="btn sec" href="#contacto">Falar Comigo</a>
+        </div>
+      </div>
+      <div class="hero-img-wrapper">
+        <img id="foto" width="400" height="500" alt="Dinostrato Eugénio Bernardo">
+      </div>
+    </div>
+  </div>
+
+  <section id="sobre">
+    <div class="wrap">
+      <h2>Sobre Mim</h2>
+      <div class="sobre-grid">
+        <div>
+          <div class="sobre" id="sobre-texto"></div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+          <div class="perfil-card">
+            <h3>Perfil Profissional</h3>
+            <p>Engenheiro de Software & Especialista em IA Aplicada, dedicado a desenhar ferramentas digitais eficientes que otimizam processos e facilitam o dia a dia das comunidades em Moçambique.</p>
+          </div>
+          <div class="stats-card" id="stats"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projetos">
+    <div class="wrap">
+      <h2>Projetos em Destaque</h2>
+      <div class="grade-projetos" id="projetos-lista"></div>
+      
+      <div class="demos-container">
+        <h3>Experimentar Demonstrações Técnicas</h3>
+        <p style="color: var(--mut); margin-top: 0.3rem;">Testa uma versão simulada dos meus produtos diretamente aqui na página.</p>
+        <div class="demos-grid">
+          <div class="demo-box">
+            <h4>SaúdeBot (IA Assistant)</h4>
+            <form id="saude-form">
+              <input id="saude-in" placeholder="Ex.: Como prevenir a malária?" autocomplete="off" required>
+              <button class="btn" type="submit" style="padding: 0.6rem;">Perguntar à IA</button>
+            </form>
+            <div class="saida-demo" id="saude-out">A resposta inteligente aparecerá aqui...</div>
+          </div>
+          <div class="demo-box">
+            <h4>Dicionário USSD Simulator</h4>
+            <form id="ussd-form">
+              <input id="ussd-in" placeholder="Ex.: casa" autocomplete="off" required>
+              <button class="btn" type="submit" style="padding: 0.6rem;">Enviar USSD</button>
+            </form>
+            <div class="saida-demo mono" id="ussd-out">*384*18443#\nDICIONARIO PT-EN\nDigite a palavra:</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="competencias">
+    <div class="wrap">
+      <h2>Competências Técnicas</h2>
+      <div class="grade-skills" id="skills"></div>
+    </div>
+  </section>
+
+  <section id="experiencia">
+    <div class="wrap">
+      <h2>Experiência & Formação</h2>
+      <div class="timeline-grid">
+        <div>
+          <h3 style="margin-bottom: 1.5rem; color: var(--teal);">Experiência Profissional</h3>
+          <div class="timeline" id="exp"></div>
+        </div>
+        <div>
+          <h3 style="margin-bottom: 1.5rem; color: var(--teal);">Formação Académica</h3>
+          <div class="timeline" id="edu"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <div class="wrap">
+      <h2>Vamos Trabalhar Juntos?</h2>
+      <div class="contacto-grid">
+        <form class="form-contacto" id="form">
+          <div class="campo"><label for="f-nome">O seu nome</label><input id="f-nome" name="nome" required></div>
+          <div class="campo"><label for="f-email">O seu email</label><input id="f-email" name="email" type="email" required></div>
+          <div class="campo"><label for="f-msg">Mensagem</label><textarea id="f-msg" name="mensagem" required></textarea></div>
+          <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
+            <button class="btn" type="submit">Enviar pelo WhatsApp</button>
+            <button class="btn sec" type="reset">Apagar Mensagem</button>
+          </div>
+        </form>
+        <div class="info-contacto" id="info"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap" id="rodape"></div>
+</footer>
+
+<button class="chat-abrir" id="chat-abrir" type="button">🤖 Falar com Assistente IA</button>
+<aside class="chat-janela" id="chat" hidden>
+  <div class="chat-topo">
+    <span id="chat-nome">Assistente do Dino</span>
+    <button id="chat-fechar" type="button">✕</button>
+  </div>
+  <div class="chat-msgs" id="chat-msgs"></div>
+  <form class="chat-form" id="chat-form">
+    <input id="chat-in" placeholder="Escreve uma pergunta..." autocomplete="off">
+    <button class="btn" type="submit" style="padding: 0.5rem 0.8rem;">Enviar</button>
+  </form>
+</aside>
+
+<script>
+const DADOS = {
+  nome: "Dinostrato Eugénio Bernardo",
+  whatsapp: "258867455423",
+  email: "dinostratoeugenio@gmail.com",
+  telefones: ["+258 86 745 5423", "+258 84 488 3985"],
+  localizacao: "Matola, Moçambique",
+  sobre: [
+    "Estudante de Informática Aplicada na Universidade Pedagógica de Maputo e programador focado no desenvolvimento de soluções baseadas em Inteligência Artificial e automações acessíveis.",
+    "Acredito em Clean Code, arquiteturas eficientes e no desenvolvimento de tecnologias que resolvem problemas reais do quotidiano em Moçambique, mesmo com conectividade reduzida."
+  ],
+  stats: [
+    { n: "4.º Ano", t: "Informática Aplicada, UPM" },
+    { n: "4+", t: "Projetos de IA Publicados" },
+    { n: "2+", t: "Telecoms Experiência (Vodacom/Movitel)" },
+    { n: "100%", t: "Foco em Impacto Real" }
+  ],
+  projetos: [
+    { nome: "SaúdeBot Moçambique", texto: "Assistente de saúde virtual com IA integrado em múltiplas plataformas: Web, WhatsApp e USSD.", tech: ["Python", "Flask", "Groq API", "Railway", "Twilio"], demo: "https://huggingface.co/spaces/Bernardo24/26052026", github: "https://github.com/95673" },
+    { nome: "Dicionário por USSD", texto: "Ferramenta de tradução rápida de português para inglês acessível via tecnologia USSD sem internet.", tech: ["USSD", "Africa’s Talking", "Simulador"], demo: "https://developers.africastalking.com/simulator", github: "https://github.com/95673" },
+    { nome: "Plataforma de Turismo", texto: "Interface web moderna orientada a destacar pontos turísticos e experiências locais.", tech: ["HTML5", "CSS3", "JavaScript", "GitHub Pages"], demo font: inherit;
 }
 
 .campo textarea { min-height: 7rem; resize: vertical; }
